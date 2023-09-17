@@ -1,0 +1,28 @@
+function runClientCode() {
+    gsftSubmit(null, g_form.getFormElement(), 'update_field');        // Need to interact with Client side
+}
+
+var op = current.u_host_name;
+
+if (typeof window == 'undefined')
+	{
+		validateChange();
+	}
+   
+function validateChange() {
+    current.u_mc_status = "Success - Valid Change";             // Updating status
+	current.update();
+
+   var og = new GlideRecord('u_infra_use_cases');
+    og.addEncodedQuery('u_use_case=morning_checklist^u_sub_type=host');     // Get only those records which satisfy these cond.
+	og.addQuery('u_host_name', op);                                         // and Match that particular Host Name as op
+    og.query();
+    if(og.next())
+    {
+        og.u_mc_status = "Success - Valid Change";                      // Update the Status
+		og.update();                                                   
+		window.location.reload(true);
+        
+    }
+	
+}
